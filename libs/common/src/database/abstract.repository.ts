@@ -93,11 +93,4 @@ export abstract class AbstractRepository<T extends AbstractDocument> {
   async aggregate(pipeline?: PipelineStage[], options?: AggregateOptions) {
     return await this.model.aggregate(pipeline, options);
   }
-
-  
-  async startTransaction() {
-    const session = await this.connection.startSession();
-    session.startTransaction();
-    return session;
-  }
 }

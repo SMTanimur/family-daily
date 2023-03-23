@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@Hooks/*": [
+        "src/Hooks/*"
+      ],
+      "@lib/*": [
+        "src/lib/*"
+      ],
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@services/*": [
+        "src/services/*"
+      ],
+      "@api/*": [
+        "src/api/*"
+      ],
+      "@styles/*": [
+        "src/styles/*"
+      ],
+      "@HOC/*": [
+        "src/HOC/*"
+      ],
+      "@interfaces/*": [
+        "src/interfaces/*"
+      ],
+      "@shared/*": [
+        "src/shared/*"
+      ],
+      "@data/*": [
+        "src/data/*"
+      ]
+    }
+  },
+  "extends": "..\\..\\..\\apps\\web\\tsconfig.json"
+}
