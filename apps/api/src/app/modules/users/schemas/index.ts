@@ -1,42 +1,62 @@
 import * as bcrypt from 'bcrypt';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
-import { Address, AddressSchema } from './address.schema'
+import mongoose, { Types } from 'mongoose';
 import { AbstractDocument } from '@family-daily/common';
+import { Profile, ProfileSchema } from './profile.schema';
+import { Shop } from '../../shops/schemas/shop.shema';
+import { Role } from '../../../common/constants/role-enum';
+
 
 @Schema({ timestamps: true })
 export class User {
-  @Prop({ type: [AddressSchema] })
-  addresses?: Types.Array<Address>;
+  // @Prop({ type: [AddressSchema] })
+  // addresses?: 
 
-  @Prop({ type: String, required: true })
+
+  @Prop({ required: true })
   name: string;
 
-  @Prop({ type: String, required: true, unique: true })
+
+  @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ type: String, unique: true, slug: 'name', slugPaddingSize: 4 })
-  username?: string;
-
-  @Prop({ type: String })
-  phone: string;
-
-  @Prop({ type: String, required: true })
+  @Prop({ required: true })
   password: string;
 
-  @Prop({
-    type: String,
-    default:
-      'https://res.cloudinary.com/muttakinhasib/image/upload/v1611336104/avatar/user_qcrqny.svg',
-  })
-  avatar?: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Shop' })
+  shop?: Shop;
+
+ 
+  @Prop({ type: ProfileSchema })
+  profile?: Profile;
+
+ 
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Shop' }] })
+  shops?: Shop[];
+
+ 
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Shop' })
+  managed_shop?: Shop;
+
+  
+  @Prop({ default: true })
+  is_active?: boolean;
+
+
+  @Prop()
+  contact?: string;
+
+
+  @Prop({ default: false })
+  email_verified?: boolean;
 
   @Prop({
     type: String,
-    default: 'customer',
-    enum: ['admin', 'merchant', 'mechanic', 'customer'],
+    default:Role.CUSTOMER,
+    enum: [Role.ADMIN, Role.STAFF, Role.CUSTOMER],
   })
-  role: string;
+  roles?:Role[]
 }
 
 export interface UserDocument extends User, AbstractDocument {

@@ -14,15 +14,9 @@ export class TagsService {
   constructor(private readonly tagsRepository:TagsRepository){}
 
   async createTag (createTagDto:CreateTagDto):Promise<string>{
-    const session = await this.tagsRepository.startTransaction();
-    try {
-      await session.commitTransaction();
-      await this.tagsRepository.create(createTagDto,{session});
+
+      await this.tagsRepository.create(createTagDto);
       return 'Tag successfully created';
-    } catch (error) {
-      await session.abortTransaction();
-      throw error;
-    }
   }
 
   async update (id:string,updateTagDto:UpdateTagDto):Promise<string>{

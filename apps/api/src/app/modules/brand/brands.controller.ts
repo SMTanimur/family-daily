@@ -15,9 +15,9 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { Role } from '../../common/constants/role-enum';
+import { Roles } from '../../common/decorators/roles.decorator';
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
-import { Role } from '../shared/roles';
-import { Roles } from '../shared/roles/roles.decorators';
 import { BrandsService } from './brands.service';
 import { CreateBrandDto } from './dto/create-brand';
 import { GetBrandsDto } from './dto/get-brands';
@@ -36,7 +36,7 @@ export class BrandsController {
   @ApiCreatedResponse({ description: 'Brand successfully created' })
   @Post()
   @UseGuards(AuthenticatedGuard)
-  // @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN)
   async createBrand(@Body() createCategoryDto: CreateBrandDto) {
     return await this.brandsService.createBrand(createCategoryDto)
   }

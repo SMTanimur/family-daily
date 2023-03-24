@@ -1,11 +1,12 @@
-import * as MongoDBStore from 'connect-mongodb-session';
+
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import * as morgan from 'morgan';
 import helmet from 'helmet';
 import 'colors';
+import MongoDBStore from 'connect-mongodb-session';
+import  passport from 'passport';
 import session from 'express-session';
-import * as passport from 'passport';
 import {
   ConfigurationService,
   NestHttpExceptionFilter
@@ -16,6 +17,7 @@ import { AppModule } from './app/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 const MongoStore = MongoDBStore(session);
+
 
 async function bootstrap() {
   try {
@@ -48,32 +50,34 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('docs', app, document);
 
-    // Express session configuration
-    app.use(
-      session({
-        name: configurationService.SESSION_NAME,
-        secret: configurationService.SESSION_SECRET_KEY,
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-          maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-          httpOnly: true,
-          // TODO: Need to check when it's live on the production server
-          // sameSite: ServerConfig.NODE_ENV !== 'production' ? 'none' : 'lax',
-          sameSite: 'lax',
-          // TODO: Enable secure cookie in production
-          secure: false, //|| ServerConfig.NODE_ENV === 'production',
-        },
-        store: new MongoStore({
-          uri: configurationService.MONGODB_URI,
-          collection: 'sessions',
-          expires: 30 * 24 * 60 * 60 * 1000, // 30 days
-        }),
-      })
-    );
-    // Passport configuration
-    app.use(passport.initialize());
-    app.use(passport.session());
+       // Express session configuration
+       app.use(
+        session({
+          name: configurationService.SESSION_NAME,
+          secret: configurationService.SESSION_SECRET_KEY,
+          resave: false,
+          saveUninitialized: false,
+          cookie: {
+            maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+            httpOnly: true,
+            // TODO: Need to check when it's live on the production server
+            // sameSite: ServerConfig.NODE_ENV !== 'production' ? 'none' : 'lax',
+            sameSite: 'lax',
+            // TODO: Enable secure cookie in production
+            secure: false, //|| ServerConfig.NODE_ENV === 'production',
+          },
+          store: new MongoStore({
+            uri: configurationService.MONGODB_URI,
+            collection: 'sessions',
+            expires: 30 * 24 * 60 * 60 * 1000, // 30 days
+          }),
+        })
+      );
+      // Passport configuration
+      app.use(passport.initialize());
+      app.use(passport.session());
+
+ 
 
     app.useGlobalFilters(new NestHttpExceptionFilter(configurationService));
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }));

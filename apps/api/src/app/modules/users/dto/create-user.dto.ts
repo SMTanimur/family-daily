@@ -1,5 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsArray, IsBoolean, IsEmail, IsEnum, IsMongoId, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, ValidateNested } from 'class-validator';
+import { Role } from '../../../common/constants/role-enum';
+import { Shop } from '../../shops/schemas/shop.shema';
+import { Profile } from '../schemas/profile.schema';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -12,23 +16,50 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  username?: string;
 
   @ApiProperty()
   @IsNotEmpty({ message: 'Password is required' })
   @IsString()
   password: string;
 
+  @IsMongoId()
+  @IsOptional()
   @ApiProperty()
-  @IsNotEmpty({ message: 'Phone is required' })
-  @IsString()
-  phone: string;
+  shop?: Shop;
 
+  @ValidateNested()
+  @Type(() => Profile)
   @ApiProperty()
-  @IsNotEmpty({ message: 'Role is required' })
-  @IsString()
-  role: string;
+  @IsOptional()
+  profile?: Profile;
+
+  @IsMongoId({ each: true })
+  @IsArray()
+  @IsOptional()
+  @ApiProperty()
+  shops?: Shop[];
+
+  @IsMongoId()
+  @IsOptional()
+  @ApiProperty()
+  managed_shop?: Shop;
+
+  @IsBoolean()
+  @IsOptional()
+ 
+  is_active?: boolean;
+
+  @IsPhoneNumber(null, {
+    message: 'Contact must be valid phone number. (eg: +92XXXXXXXXXX)',
+  })
+  @IsOptional()
+  contact?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  email_verified?: boolean;
+
+  @IsEnum(Role)
+  @IsOptional()
+  roles?: Role[];
 }

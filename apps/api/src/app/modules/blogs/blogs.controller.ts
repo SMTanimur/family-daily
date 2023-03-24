@@ -1,3 +1,4 @@
+import { PaginationArgs } from '@family-daily/common';
 import {
   Controller,
   UseGuards,
@@ -16,10 +17,10 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { PaginationArgs } from '@pjesekembimi/common';
+import { Role } from '../../common/constants/role-enum';
+import { Roles } from '../../common/decorators/roles.decorator';
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
-import { Role } from '../shared/roles';
-import { Roles } from '../shared/roles/roles.decorators';
+
 import { BlogsService } from './blogs.service';
 import { CreateBlogDto } from './dto/create-blog';
 import { UpdateBlogDto } from './dto/update-blog';

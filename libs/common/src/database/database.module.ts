@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-var-requires */
+
+
 import { Logger, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigurationService } from '../configuration/configuration.service';
@@ -7,6 +9,7 @@ import { Connection } from 'mongoose';
 import 'colors';
 import * as mongoosePaginate from 'mongoose-paginate-v2';
 //@ts-ignore
+import  mongooseAggregatePaginate from 'mongoose-aggregate-paginate-v2';
 @Module({
   imports: [
     MongooseModule.forRootAsync({
@@ -34,7 +37,9 @@ import * as mongoosePaginate from 'mongoose-paginate-v2';
           //! MongoDB AutoPopulate Plugin Initialization
           connection.plugin(require('mongoose-autopopulate'));
           connection.plugin(require('mongoose-slug-updater'));
-          connection.plugin(mongoosePaginate);
+          // //@ts-ignore
+          // connection.plugin(mongoosePaginate);
+          // connection.plugin(mongooseAggregatePaginate);
           return connection;
         },
       }),

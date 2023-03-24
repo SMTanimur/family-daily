@@ -15,10 +15,10 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { Role } from '../../common/constants/role-enum';
+import { Roles } from '../../common/decorators/roles.decorator';
 
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
-import { Role } from '../shared/roles';
-import { Roles } from '../shared/roles/roles.decorators';
 import { AttributesService } from './attributes.service';
 import { CreateAttributeDto } from './dto/create-attribute.dto';
 import { GetAttributesArgs } from './dto/get-attributes.dto';
@@ -33,7 +33,7 @@ export class AttributesController {
   @ApiOperation({ summary: 'Create Attributes' })
   @ApiCreatedResponse({ description: ' successfully created' })
   @Post()
-  // @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN)
   @UseGuards(AuthenticatedGuard)
   async create(@Body() createAttributeDto: CreateAttributeDto) {
     return await this.attributesService.createAttribute(createAttributeDto);

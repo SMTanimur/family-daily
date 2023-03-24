@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@family-daily/common": ["libs/common/src/index.ts"]
+      "@family-daily/common": ["libs/common/src/index.ts"],
+      "@family-daily/mail": ["libs/mail/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

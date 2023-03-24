@@ -4,6 +4,8 @@ https://docs.nestjs.com/controllers#controllers
 
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Role } from '../../common/constants/role-enum';
+import { Roles } from '../../common/decorators/roles.decorator';
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
 import { CreateTypeDto } from './dto/create-type.dto';
 import { GetTypesDto } from './dto/get-types.dto';
@@ -19,7 +21,7 @@ export class TypesController {
   @ApiOperation({ summary: 'Create a Type' })
   @ApiCreatedResponse({ description: ' successfully created' })
   @Post()
-  // @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN)
   @UseGuards(AuthenticatedGuard)
   async create(@Body() createTypeDto:CreateTypeDto) {
     return await this.typesService.createType(createTypeDto);

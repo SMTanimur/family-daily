@@ -9,7 +9,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
-  ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -17,13 +16,12 @@ import {
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
-import { AccountActivateDto } from './dto/account-activate.dto';
 import { JwtService } from '@nestjs/jwt';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { LoginDto } from './dto/login.dto';
-import { Role } from '../shared/roles';
-import { omit, pick } from 'lodash';
+
 import { ConfigurationService } from '@family-daily/common';
+import { AccountService } from '@family-daily/mail';
 
 @ApiTags('Auth')
 @Controller({ path: 'auth', version: '1' })
@@ -32,6 +30,7 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly jwtService: JwtService,
     private readonly configurationService: ConfigurationService,
+    private readonly accountService: AccountService,
     private readonly UsersService: UsersService
   ) {}
 
@@ -43,22 +42,15 @@ export class AuthController {
     @Session() session: any
   ) {
     const data = await this.UsersService.createUser(createUserDto);
+    const token = this.jwtService.sign(createUserDto, { expiresIn: '1h' })
 
-    const user = pick(data, [
-      '_id',
-      'email',
-      'username',
-      'name',
-      'role',
-      'avatar',
-    ]);
-
-    session.passport = { user };
+   const result=  await this.accountService.sendConfirmation(data.email,token)
+   console.log(result)
     return {
-      message: `Welcome to ${this.configurationService.BRAND_NAME}! 🎉`,
-      user: omit(data, 'password'),
+      success: true,
+      message:
+        'We have sent you an email on the given account. Please verify.',
     };
-    // return await this.UsersService.createUser(createUserDto);
   }
 
   // @ApiOperation({ summary: 'Activate user account' })

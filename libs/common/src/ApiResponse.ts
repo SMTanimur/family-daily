@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { HttpStatus } from '@nestjs/common';
-import * as moment from 'moment';
 import { ResponseType } from './response';
-
 
 type Source = 'success' | 'error';
 
@@ -18,7 +18,8 @@ export class ApiResponse<TData> {
     this.code = code;
     this.message = message;
     this.data = data || null;
-    this.timestamp = moment().format('LLLL');
+    //@ts-ignore
+    // this.timestamp = moment().format('LLLL');
   }
 
   public static response<TData>(

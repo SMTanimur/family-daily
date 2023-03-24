@@ -6,16 +6,14 @@ import { UserDocument } from './schemas';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { map, omit, pick } from 'lodash';
-import { AddressDto } from './dto/create-address.dto';
-import { UpdateAddressDto } from './dto/update-address.dto';
 import { GetUsersDto } from './dto/get-users.dto';
+import { createHash } from '../../utils/hash';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly usersRepository: UsersRepository,
     private readonly jwtService: JwtService,
-    private readonly accountService: AccountService
   ) {}
 
   // async verifyCredentials(createUserDto: CreateUserDto) {
@@ -33,10 +31,7 @@ export class UsersService {
 
   //   const token = this.jwtService.sign(createUserDto, { expiresIn: '1h' });
 
-  //   return await this.accountService.sendConfirmation(
-  //     createUserDto.email,
-  //     token
-  //   );
+    
   // }
 
   async createUser(createUserDto: CreateUserDto) {
@@ -61,26 +56,33 @@ export class UsersService {
     }
   }
 
-  async updateUser(updateUserDto: UpdateUserDto) {
-    if (updateUserDto.password) {
-      await this.usersRepository.validatePassword(
-        updateUserDto._id,
-        updateUserDto.currentPassword
-      );
+  // async updateUser(updateUserDto: UpdateUserDto) {
+  //   if (updateUserDto.password) {
+  //     await this.usersRepository.validatePassword(
+  //       updateUserDto._id,
+  //       updateUserDto.currentPassword
+  //     );
 
-      updateUserDto.password = await createHash(updateUserDto.password);
-    }
-    const userData = await this.usersRepository.findOneAndUpdate(
-      { _id: updateUserDto._id },
-      updateUserDto
+  //     updateUserDto.password = await createHash(updateUserDto.password);
+  //   }
+  //   const userData = await this.usersRepository.findOneAndUpdate(
+  //     { _id: updateUserDto._id },
+  //     updateUserDto
+  //   );
+
+  //   return {
+  //     message: updateUserDto.password
+  //       ? 'Password changed'
+  //       : 'Account information updated',
+  //     user: userData,
+  //   };
+  // }
+
+  async updateByEmail(email: string, updateUserDto: UpdateUserDto) {
+    return await this.usersRepository.findOneAndUpdate(
+      { email },
+      { $set: updateUserDto }
     );
-
-    return {
-      message: updateUserDto.password
-        ? 'Password changed'
-        : 'Account information updated',
-      user: userData,
-    };
   }
 
   async findUsers(query: GetUsersDto) {
@@ -97,26 +99,5 @@ export class UsersService {
     return 'Account has been deleted';
   }
 
-  async createAddress(id: string, addressDto: AddressDto) {
-    return await this.usersRepository.createAddress(id, addressDto);
-  }
-
-  async updateAddress(id: string, updateAddressDto: UpdateAddressDto) {
-    return await this.usersRepository.updateAddress(id, updateAddressDto);
-  }
-
-  async deleteAddress(id: string, addressId: string) {
-    await this.usersRepository.findOneAndUpdate(
-      { _id: id },
-      {
-        $pull: {
-          addresses: {
-            _id: addressId,
-          },
-        },
-      }
-    );
-
-    return 'Address has been deleted';
-  }
+  
 }

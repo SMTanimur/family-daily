@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { TimeoutInterceptor } from './interceptors/timeout.interceptor';
 import { PassportModule } from '@nestjs/passport';
 
 import { JwtModule } from '@nestjs/jwt';
-import { RolesGuard } from '../modules/shared/roles';
 import { ConfigurationModule, ConfigurationService, DatabaseModule } from '@family-daily/common';
+import { RolesGuard } from '../common/guards/roles.guards';
 
 // @Global()
 @Module({

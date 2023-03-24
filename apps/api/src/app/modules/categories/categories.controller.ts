@@ -15,9 +15,9 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { Role } from '../../common/constants/role-enum';
+import { Roles } from '../../common/decorators/roles.decorator';
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
-import { Role } from '../shared/roles';
-import { Roles } from '../shared/roles/roles.decorators';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDTO } from './dto/create-category';
 import { GetCategoriesDto } from './dto/get-categories.dto';

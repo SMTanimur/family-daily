@@ -8,10 +8,8 @@ import {
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, PaginateModel } from 'mongoose';
 import { omit, pick } from 'lodash';
-import { AddressDto } from './dto/create-address.dto';
-import { UpdateAddressDto } from './dto/update-address.dto';
-import { GetUsersDto } from './dto/get-users.dto';
 import { AbstractRepository } from '@family-daily/common';
+import { GetUsersDto } from './dto/get-users.dto';
 
 export class UsersRepository extends AbstractRepository<UserDocument> {
   protected readonly logger = new Logger(UsersRepository.name);
@@ -50,61 +48,7 @@ export class UsersRepository extends AbstractRepository<UserDocument> {
     return true;
   }
 
-  async createAddress(id: string, addressDto: AddressDto) {
-    const user = await this.userModel.findById(id);
-    if (!user) throw new NotFoundException('User not found.');
-
-    if (addressDto.default) {
-      const addressIndex = user.addresses.findIndex((x) => x.default);
-      if (addressIndex !== -1) user.addresses[addressIndex].default = false;
-    }
-
-    user.addresses.push(addressDto);
-    await user.save();
-
-    return 'New address added.';
-  }
-
-  async updateAddress(id: string, updateAddressDto: UpdateAddressDto) {
-    const user = await this.userModel.findById(id);
-    if (!user) throw new NotFoundException('User not found.');
-
-    const addressIndex = user.addresses.findIndex(
-      (x: any) => String(x._id) === String(updateAddressDto._id)
-    );
-
-    if (addressIndex === -1) throw new NotFoundException('Address not found.');
-
-    if (updateAddressDto.default) {
-      const defaultAddressIndex = user.addresses.findIndex((x) => x.default);
-
-      if (defaultAddressIndex !== -1)
-        user.addresses[defaultAddressIndex].default = false;
-    }
-
-    await user.save();
-
-    // eslint-disable-next-line prefer-const
-    let updateAddressData = {};
-
-    // eslint-disable-next-line prefer-const
-    for (let key in updateAddressDto) {
-      if (key !== '_id') {
-        updateAddressData[`addresses.$.${key}`] = updateAddressDto[key];
-      }
-    }
-
-    await this.model.findOneAndUpdate(
-      { _id: id, 'addresses._id': updateAddressDto._id },
-      {
-        $set: updateAddressData,
-      }
-    );
-
-    return 'Address updated.';
-  }
-
-
+  
   async getUsers({
     search,
     roles,
