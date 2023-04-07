@@ -55,18 +55,18 @@ export class UsersController {
   }
 
 
-  // @ApiOperation({ summary: 'Update user' })
-  // @ApiCreatedResponse({ description: 'User successfully updated' })
-  // @UseGuards(AuthenticatedGuard)
-  // @Roles(Role.CUSTOMER, Role.ADMIN)
-  // @Patch()
-  // async updateUser(
-  //   @Body() updateUserDto: UpdateUserDto,
-  //   @Req() req: any
-  // ): Promise<any> {
-  //   updateUserDto._id = req?.user?._id;
-  //   return await this.userService.updateUser(updateUserDto);
-  // }
+  @ApiOperation({ summary: 'Update user' })
+  @ApiCreatedResponse({ description: 'User successfully updated' })
+  @UseGuards(AuthenticatedGuard)
+  @Roles(Role.CUSTOMER, Role.ADMIN)
+  @Patch()
+  async updateUser(
+    @Body() updateUserDto: UpdateUserDto,
+    @Req() req: any
+  ): Promise<any> {
+    updateUserDto._id = req?.user?._id;
+    return await this.userService.updateUser(updateUserDto);
+  }
 
   @ApiOperation({ summary: 'Get Users' })
   @ApiOkResponse({ description: 'Returns all users' })

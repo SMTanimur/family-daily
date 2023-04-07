@@ -56,27 +56,13 @@ export class UsersService {
     }
   }
 
-  // async updateUser(updateUserDto: UpdateUserDto) {
-  //   if (updateUserDto.password) {
-  //     await this.usersRepository.validatePassword(
-  //       updateUserDto._id,
-  //       updateUserDto.currentPassword
-  //     );
-
-  //     updateUserDto.password = await createHash(updateUserDto.password);
-  //   }
-  //   const userData = await this.usersRepository.findOneAndUpdate(
-  //     { _id: updateUserDto._id },
-  //     updateUserDto
-  //   );
-
-  //   return {
-  //     message: updateUserDto.password
-  //       ? 'Password changed'
-  //       : 'Account information updated',
-  //     user: userData,
-  //   };
-  // }
+  async updateUser(updateUserDto: UpdateUserDto) {
+     await this.usersRepository.findOneAndUpdate(
+      { _id: updateUserDto._id },
+      updateUserDto
+    );
+    return 'Account information updated'
+  }
 
   async updateByEmail(email: string, updateUserDto: UpdateUserDto) {
     return await this.usersRepository.findOneAndUpdate(

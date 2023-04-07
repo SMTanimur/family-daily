@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@family-daily/common": ["libs/common/src/index.ts"],
+      "@family-daily/frontend": ["libs/frontend/src/index.ts"],
       "@family-daily/mail": ["libs/mail/src/index.ts"]
     }
   },

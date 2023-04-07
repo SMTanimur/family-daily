@@ -3,17 +3,39 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["src/components/*"],
-      "@Hooks/*": ["src/Hooks/*"],
-      "@lib/*": ["src/lib/*"],
-      "@app/*": ["src/app/*"],
-      "@services/*": ["src/services/*"],
-      "@api/*": ["src/api/*"],
-      "@styles/*": ["src/styles/*"],
-      "@HOC/*": ["src/HOC/*"],
-      "@interfaces/*": ["src/interfaces/*"],
-      "@shared/*": ["src/shared/*"],
-      "@data/*": ["src/data/*"]
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@Hooks/*": [
+        "src/Hooks/*"
+      ],
+      "@lib/*": [
+        "src/lib/*"
+      ],
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@services/*": [
+        "src/services/*"
+      ],
+      "@api/*": [
+        "src/api/*"
+      ],
+      "@styles/*": [
+        "src/styles/*"
+      ],
+      "@HOC/*": [
+        "src/HOC/*"
+      ],
+      "@interfaces/*": [
+        "src/interfaces/*"
+      ],
+      "@shared/*": [
+        "src/shared/*"
+      ],
+      "@data/*": [
+        "src/data/*"
+      ]
     },
     "jsx": "preserve",
     "allowJs": true,
@@ -33,7 +55,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "strictNullChecks": true
   },
   "include": [
     "**/*.ts",
