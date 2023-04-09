@@ -116,4 +116,17 @@ export class UsersRepository extends AbstractRepository<UserDocument> {
    return 'Account information updated'
  }
 
+ async banUser(id: string) {
+  return await this.userModel.findByIdAndUpdate(id, {
+    $set: { is_active: false },
+  });
+}
+
+async activateUser(id: string) {
+  return await this.userModel.findByIdAndUpdate(id, {
+    $set: { is_active: true },
+  });
+}
+
+
 }

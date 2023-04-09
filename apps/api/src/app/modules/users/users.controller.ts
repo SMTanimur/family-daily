@@ -68,6 +68,26 @@ export class UsersController {
     updateUserDto._id = req?.user?._id;
     return await this.userService.updateUser(updateUserDto);
   }
+  @ApiOperation({ summary: 'Active user' })
+  @ApiCreatedResponse({ description: 'User successfully Active' })
+  @UseGuards(AuthenticatedGuard)
+  @Roles(Role.CUSTOMER, Role.ADMIN)
+  @Patch()
+  async activeUser(
+    @Req() req: any
+  ): Promise<any> {
+    return await this.userService.activateUser(req?.user?._id);
+  }
+  @ApiOperation({ summary: 'Ban user' })
+  @ApiCreatedResponse({ description: 'User ban successfully' })
+  @UseGuards(AuthenticatedGuard)
+  @Roles(Role.CUSTOMER, Role.ADMIN)
+  @Patch()
+  async banUser(
+    @Req() req: any
+  ): Promise<any> {
+    return await this.userService.banUser(req?.user?._id);
+  }
 
 
   @ApiOperation({ summary: 'Create Profile' })

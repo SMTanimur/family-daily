@@ -72,6 +72,16 @@ export class UsersService {
      return await this.usersRepository.updateProfile(id,createProfileDto);
   }
 
+
+  async banUser(id: string) {
+    return await this.usersRepository.banUser(id)
+  }
+
+  async activateUser(id: string) {
+    return await this.usersRepository.activateUser(id)
+  }
+
+
   async updateByEmail(email: string, updateUserDto: UpdateUserDto) {
     return await this.usersRepository.findOneAndUpdate(
       { email },
