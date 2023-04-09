@@ -4,12 +4,15 @@ import {
   Logger,
   NotFoundException,
   UnauthorizedException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, PaginateModel } from 'mongoose';
 import { omit, pick } from 'lodash';
 import { AbstractRepository } from '@family-daily/common';
 import { GetUsersDto } from './dto/get-users.dto';
+import { CreateProfileDto } from './dto/create-profile.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 export class UsersRepository extends AbstractRepository<UserDocument> {
   protected readonly logger = new Logger(UsersRepository.name);
@@ -91,4 +94,26 @@ export class UsersRepository extends AbstractRepository<UserDocument> {
     },
   };
   }
+
+
+  async createProfile(id:string,createProfileDto: CreateProfileDto) {
+    const user = await this.userModel.findOne({ _id: id });
+     if (!user) {
+       throw new UnprocessableEntityException('User not found');
+     }
+     user.profile = createProfileDto;
+      await user.save()
+   
+   return 'Account information updated'
+ }
+  async updateProfile(id:string,updateProfileDto: UpdateProfileDto) {
+    const user = await this.userModel.findOne({ _id: id });
+     if (!user) {
+       throw new UnprocessableEntityException('User not found');
+     }
+     await this.userModel.findOneAndUpdate({ _id: id }, { $set: { profile: updateProfileDto } })
+   
+   return 'Account information updated'
+ }
+
 }

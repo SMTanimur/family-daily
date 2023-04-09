@@ -26,6 +26,7 @@ import { GetUsersDto } from './dto/get-users.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { Role } from '../../common/constants/role-enum';
+import { CreateProfileDto } from './dto/create-profile.dto';
 
 @ApiTags(User.name)
 @Controller({ path: 'users', version: '1' })
@@ -66,6 +67,26 @@ export class UsersController {
   ): Promise<any> {
     updateUserDto._id = req?.user?._id;
     return await this.userService.updateUser(updateUserDto);
+  }
+
+
+  @ApiOperation({ summary: 'Create Profile' })
+  @ApiCreatedResponse({ description: 'This profile has been created' })
+  // @UseGuards(AuthenticatedGuard)
+  // @Roles(Role.CUSTOMER)
+  @Post('profiles')
+  async createProfile(@Body() createProfile:CreateProfileDto , @Req() req: any) {
+    const id = req?.user?._id;
+    return await this.userService.createProfile(id, createProfile);
+  }
+  @ApiOperation({ summary: 'Create Profile' })
+  @ApiCreatedResponse({ description: 'This profile has been created' })
+  // @UseGuards(AuthenticatedGuard)
+  // @Roles(Role.CUSTOMER)
+  @Patch('profiles')
+  async updateProfile(@Body() createProfile:CreateProfileDto , @Req() req: any) {
+    const id = req?.user?._id;
+    return await this.userService.updateProfile(id, createProfile);
   }
 
   @ApiOperation({ summary: 'Get Users' })

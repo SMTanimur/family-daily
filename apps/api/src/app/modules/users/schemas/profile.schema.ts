@@ -8,10 +8,10 @@ export type ProfileSchema = Profile & Document;
 @Schema()
 export class Profile {
   @Prop()
-  avatar: string;
+  avatar?: string;
 
   @Prop()
-  bio: string;
+  bio?: string;
 
   @Prop(
     raw({
@@ -19,11 +19,11 @@ export class Profile {
       link: { type: String },
     }),
   )
-  socials: Record<string, any>[];
+  socials?: Record<string, any>[];
 
   
   @Prop()
-  contact: string;
+  contact?: string;
 }
 
 export const ProfileSchema = SchemaFactory.createForClass(Profile);

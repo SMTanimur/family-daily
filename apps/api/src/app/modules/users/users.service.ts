@@ -8,6 +8,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { map, omit, pick } from 'lodash';
 import { GetUsersDto } from './dto/get-users.dto';
 import { createHash } from '../../utils/hash';
+import { CreateProfileDto } from './dto/create-profile.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class UsersService {
@@ -62,6 +64,12 @@ export class UsersService {
       updateUserDto
     );
     return 'Account information updated'
+  }
+  async createProfile(id:string,createProfileDto: CreateProfileDto) {
+     return await this.usersRepository.createProfile(id,createProfileDto);
+  }
+  async updateProfile(id:string,createProfileDto: UpdateProfileDto) {
+     return await this.usersRepository.updateProfile(id,createProfileDto);
   }
 
   async updateByEmail(email: string, updateUserDto: UpdateUserDto) {
